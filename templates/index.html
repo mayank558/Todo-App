@@ -1,0 +1,65 @@
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <title>Welcome to Todo-App</title>
+</head>
+
+<body>
+
+    {% block content %}
+    <div class="nav">
+        <center>
+            <h2>
+                Todo-Application
+            </h2>
+        </center>
+    </div>
+    <br/><br/><br/><br/>
+    <p>This is simple Todo-App just to revise my concepts about django-admin and practice some delete operations (as I need them in my next bigger project)</p>
+    <br/>
+    <section>
+        {% if not todos %}
+        <center>
+            <pre>
+                No Todos Found
+            </pre>
+        </center>
+        {% endif %}
+    </section>
+
+    <section>
+        <center>
+            <h2> Your Todo</h2>
+            {% for todo in todos %}
+            <form action="{% url 'delete' todo.id %}" method="post">
+                {% csrf_token %}
+                <li> {{ todo.todo }} | {{ todo.is_completed }}</li>
+                <li><input type="submit" value="delete" name="delete"></li>
+                <li> <input type="submit" value="mark_as_complete" name="complete"></li>
+                <li> <input type="submit" value="update" name="update"></li>
+            </form>
+
+            {% endfor %}
+        </center>
+
+    </section>
+    <section>
+        <center>
+            <br/>
+            <p>Add some todo</p>
+            <form action="{% url 'index' %}" method="POST">
+                {% csrf_token %}
+                <input type="text" name="todo" />
+                <input type="submit" value="submit" name="submit" />
+
+            </form>
+        </center>
+    </section>
+    {% endblock %}
+</body>
+
+</html>
